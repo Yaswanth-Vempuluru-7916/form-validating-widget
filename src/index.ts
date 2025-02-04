@@ -1,8 +1,10 @@
-export {default as Greetings} from "./components/Greetings";
+// src/index.ts
 
-export { default as FormValidator } from './components/FormValidator';
-export { default as FormField } from './components/FormField';
-export { default as ErrorMessage } from './components/ErrorMessage';
-export { useFormValidation } from './hooks/useFormValidation';
-export { useDebounce } from './hooks/useDebounce';
-export * from './types';
+export { default as Form } from "./components/Form";
+export { default as InputField } from "./components/InputField";
+export { default as useValidation } from "./components/useValidation";
+export * from "./components/ValidationRules";
+
+export { debounce } from "./utils/debounce";
+export { throttle } from "./utils/throttle";
+export * from "./utils/polyfills";

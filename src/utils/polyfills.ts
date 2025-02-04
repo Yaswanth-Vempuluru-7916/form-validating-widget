@@ -1,26 +1,39 @@
-// Example polyfill for Array.prototype.find
-if (!Array.prototype.find) {
-    Array.prototype.find = function(predicate: (value: any, index: number, obj: any[]) => boolean) {
-      if (this == null) {
-        throw new TypeError('Array.prototype.find called on null or undefined');
-      }
-      if (typeof predicate !== 'function') {
-        throw new TypeError('predicate must be a function');
-      }
-      const list = Object(this);
-      const length = list.length >>> 0;
-      const thisArg = arguments[1];
-      let value;
-  
-      for (let i = 0; i < length; i++) {
-        value = list[i];
-        if (predicate.call(thisArg, value, i, list)) {
-          return value;
-        }
-      }
-      return undefined;
-    };
-  }
-  
-  // Add more polyfills as needed
-  
+// src/utils/polyfills.ts
+
+// Polyfill for `Array.prototype.includes`
+if (!Array.prototype.includes) {
+  Array.prototype.includes = function (searchElement, fromIndex) {
+    const len = this.length;
+    if (len === 0) return false;
+    let start = fromIndex || 0;
+    if (start < 0) start = len + start;
+    for (let i = start; i < len; i++) {
+      if (this[i] === searchElement) return true;
+    }
+    return false;
+  };
+}
+
+// Polyfill for `Object.entries`
+if (!Object.entries) {
+  Object.entries = function (obj: { [key: string]: any }) {
+    return Object.keys(obj).map((key) => [key, obj[key]]) as [string, any][]; // ✅ Cast to the correct type
+  };
+}
+
+// Polyfill for `String.prototype.trim`
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, "");
+  };
+}
+
+// Polyfill for `Number.isInteger`
+if (!Number.isInteger) {
+  Number.isInteger = function (value) {
+    return typeof value === "number" && isFinite(value) && Math.floor(value) === value;
+  };
+}
+
+// Export an empty object to mark this file as a module
+export {}; 
