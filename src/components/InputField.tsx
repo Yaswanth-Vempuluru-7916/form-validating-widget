@@ -1,20 +1,14 @@
-// src/components/InputField.tsx
-import React, { useState } from "react";
-import {
-  validateEmail,
-  validatePassword,
-  validateUsername,
-  validatePhone,
-  validateGender,
-} from "./ValidationRules";
+import React from "react";
 
 interface InputFieldProps {
   label: string;
   type: "text" | "email" | "password" | "tel" | "select";
   name: string;
-  options?: string[]; // For select dropdown
+  options?: string[];
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  error?: string | null;
   placeholder?: string;
-  required?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -22,61 +16,25 @@ const InputField: React.FC<InputFieldProps> = ({
   type,
   name,
   options,
+  value,
+  onChange,
+  error,
   placeholder,
-  required,
 }) => {
-  const [value, setValue] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleValidation = (val: string) => {
-    let validationError: string | null = null;
-    switch (type) {
-      case "email":
-        validationError = validateEmail(val);
-        break;
-      case "password":
-        validationError = validatePassword(val);
-        break;
-      case "text":
-        validationError = validateUsername(val);
-        break;
-      case "tel":
-        validationError = validatePhone(val);
-        break;
-      case "select":
-        validationError = validateGender(val);
-        break;
-      default:
-        break;
-    }
-    setError(validationError);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setValue(e.target.value);
-    handleValidation(e.target.value);
-  };
-
   return (
-    <div className="relative w-full">
-      <label
-        className={`block text-sm font-medium transition-all ${
-          error ? "text-red-500" : "text-gray-700"
-        }`}
-      >
+    <div className="relative w-full group">
+      <label className={`block text-sm font-medium mb-2 ${error ? "text-red-500" : "text-gray-700"}`}>
         {label}
       </label>
 
       {type === "select" ? (
         <select
           name={name}
-          className={`w-full p-2 border ${
-            error ? "border-red-500" : "border-gray-300"
-          } rounded-lg outline-none focus:ring-2 focus:ring-blue-500 transition-all`}
-          onChange={handleChange}
           value={value}
+          onChange={onChange}
+          className={`w-full p-3 border-2 ${
+            error ? "border-red-500" : "border-gray-200"
+          } rounded-lg outline-none bg-white transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100`}
         >
           <option value="">Select</option>
           {options?.map((opt) => (
@@ -86,34 +44,19 @@ const InputField: React.FC<InputFieldProps> = ({
           ))}
         </select>
       ) : (
-        <div className="relative">
-          <input
-            type={showPassword ? "text" : type}
-            name={name}
-            value={value}
-            placeholder={placeholder}
-            onChange={handleChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            className={`w-full p-2 border ${
-              error ? "border-red-500" : "border-gray-300"
-            } rounded-lg outline-none focus:ring-2 ${
-              isFocused ? "focus:ring-blue-500 scale-105" : "focus:ring-gray-300"
-            } transition-all`}
-          />
-          {type === "password" && (
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-2 top-2 text-gray-500"
-            >
-              {showPassword ? "🙈" : "👁️"}
-            </button>
-          )}
-        </div>
+        <input
+          type={type}
+          name={name}
+          value={value}
+          placeholder={placeholder}
+          onChange={onChange}
+          className={`w-full p-3 border-2 ${
+            error ? "border-red-500" : "border-gray-200"
+          } rounded-lg outline-none bg-white transition-all duration-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100`}
+        />
       )}
 
-      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+      {error && <p className="text-red-500 text-xs mt-2">{error}</p>}
     </div>
   );
 };

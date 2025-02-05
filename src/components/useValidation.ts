@@ -1,4 +1,3 @@
-// src/components/useValidation.ts
 import { useState } from "react";
 import {
   validateEmail,
@@ -36,7 +35,7 @@ const useValidation = () => {
     validateField(name, value, type);
   };
 
-  return { values, errors, handleChange };
+  return { values, errors, handleChange, setValues };
 };
 
 export default useValidation;
