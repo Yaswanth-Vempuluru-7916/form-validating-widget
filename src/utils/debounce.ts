@@ -6,4 +6,3 @@ export function debounce<T extends (...args: any[]) => void>(func: T, delay: num
       timer = setTimeout(() => func(...args), delay);
     }) as T;
   }
-  
