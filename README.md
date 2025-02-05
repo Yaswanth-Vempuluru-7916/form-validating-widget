@@ -1,6 +1,6 @@
 # Form Validating Widget
 
-![Form Widget](public\assets\images\form-widget.png)
+![Form Widget](public/assets/images/form-widget.png)
 
 A customizable and reusable form validation widget built with React, TypeScript, and Tailwind CSS. This widget includes advanced validation, error handling, micro-animations, and customizable styles, all in a production-ready npm package.
 
